@@ -3,7 +3,8 @@
     "allow": [
       "Bash(git add:*)",
       "Bash(git commit -m \"$(cat <<''EOF''\nAdd Experience and Education sections with profile photo\n\n- Updated name to Aleem Khan, PMP throughout the site\n- Added Experience section with timeline layout showing 5 positions\n- Added Education section with Master''s and Bachelor''s degrees\n- Added profile photo to hero section\n- Updated navigation with Experience and Education links\n- Enhanced CSS with timeline and education card styles\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "Bash(git commit:*)"
     ],
     "deny": [],
     "ask": []

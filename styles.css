@@ -139,6 +139,22 @@ nav a:hover {
     opacity: 0.9;
 }
 
+/* Section Headings */
+section h2 {
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+}
+
+.section-icon {
+    width: 32px;
+    height: 32px;
+    stroke: var(--primary-color);
+    flex-shrink: 0;
+}
+
 /* About Section */
 #about {
     padding: 4rem 2rem;
@@ -472,6 +488,11 @@ footer p {
         font-size: 1.75rem;
     }
 
+    .section-icon {
+        width: 28px;
+        height: 28px;
+    }
+
     .timeline::before {
         left: 15px;
     }
@@ -492,6 +513,11 @@ footer p {
 
     .hero-content h2 {
         font-size: 1.75rem;
+    }
+
+    .section-icon {
+        width: 24px;
+        height: 24px;
     }
 
     .project-card {
