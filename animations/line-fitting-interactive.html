@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Line Fitting Animation</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px -10px rgba(0, 0, 0, 0.15);
+        }
+
+        canvas {
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            cursor: crosshair;
+            background: white;
+        }
+
+        .controls {
+            margin-top: 1.5rem;
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        button {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+
+        button:hover {
+            background: #2563eb;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .info {
+            margin-top: 1rem;
+            text-align: center;
+            color: #64748b;
+            font-size: 0.9375rem;
+        }
+
+        h2 {
+            text-align: center;
+            color: #0f172a;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Interactive Linear Regression</h2>
+        <canvas id="canvas" width="600" height="400"></canvas>
+        <div class="controls">
+            <button onclick="fitLine()">Fit Line</button>
+            <button onclick="clearCanvas()">Clear All</button>
+            <button onclick="generateRandomPoints()">Random Points</button>
+            <button onclick="animateFitting()">Animate Fitting</button>
+        </div>
+        <div class="info">
+            Click on the canvas to add data points, then click "Fit Line" to see the best fit!
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const points = [];
+        let line = null;
+        let isAnimating = false;
+
+        // Draw axes
+        function drawAxes() {
+            ctx.strokeStyle = '#0f172a';
+            ctx.lineWidth = 2;
+
+            // X axis
+            ctx.beginPath();
+            ctx.moveTo(40, 360);
+            ctx.lineTo(580, 360);
+            ctx.stroke();
+
+            // Y axis
+            ctx.beginPath();
+            ctx.moveTo(40, 360);
+            ctx.lineTo(40, 20);
+            ctx.stroke();
+
+            // Arrow heads
+            ctx.fillStyle = '#0f172a';
+            ctx.beginPath();
+            ctx.moveTo(580, 360);
+            ctx.lineTo(570, 355);
+            ctx.lineTo(570, 365);
+            ctx.fill();
+
+            ctx.beginPath();
+            ctx.moveTo(40, 20);
+            ctx.lineTo(35, 30);
+            ctx.lineTo(45, 30);
+            ctx.fill();
+
+            // Grid
+            ctx.strokeStyle = '#e2e8f0';
+            ctx.lineWidth = 1;
+            for (let i = 1; i < 10; i++) {
+                const x = 40 + i * 60;
+                ctx.beginPath();
+                ctx.moveTo(x, 360);
+                ctx.lineTo(x, 20);
+                ctx.stroke();
+            }
+            for (let i = 1; i < 7; i++) {
+                const y = 20 + i * 60;
+                ctx.beginPath();
+                ctx.moveTo(40, y);
+                ctx.lineTo(580, y);
+                ctx.stroke();
+            }
+        }
+
+        // Draw a point
+        function drawPoint(x, y, color = '#f97316', radius = 6) {
+            ctx.fillStyle = color;
+            ctx.beginPath();
+            ctx.arc(x, y, radius, 0, 2 * Math.PI);
+            ctx.fill();
+
+            // Outer ring
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.arc(x, y, radius + 2, 0, 2 * Math.PI);
+            ctx.stroke();
+        }
+
+        // Draw line
+        function drawLine(m, b, color = '#3b82f6') {
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+
+            const x1 = 40;
+            const y1 = 360 - (m * (x1 - 40) + b);
+            const x2 = 580;
+            const y2 = 360 - (m * (x2 - 40) + b);
+
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            ctx.stroke();
+        }
+
+        // Draw residual lines
+        function drawResiduals(m, b) {
+            ctx.strokeStyle = '#ef4444';
+            ctx.lineWidth = 1.5;
+            ctx.setLineDash([5, 3]);
+
+            points.forEach(point => {
+                const predictedY = m * (point.x - 40) + b;
+                const actualY = 360 - point.y;
+
+                ctx.beginPath();
+                ctx.moveTo(point.x, point.y);
+                ctx.lineTo(point.x, 360 - predictedY);
+                ctx.stroke();
+            });
+
+            ctx.setLineDash([]);
+        }
+
+        // Calculate line of best fit using least squares
+        function calculateBestFit() {
+            if (points.length < 2) return null;
+
+            const n = points.length;
+            let sumX = 0, sumY = 0, sumXY = 0, sumX2 = 0;
+
+            points.forEach(point => {
+                const x = point.x - 40; // Adjust for axis offset
+                const y = 360 - point.y; // Invert Y and adjust
+                sumX += x;
+                sumY += y;
+                sumXY += x * y;
+                sumX2 += x * x;
+            });
+
+            const m = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
+            const b = (sumY - m * sumX) / n;
+
+            return { m, b };
+        }
+
+        // Redraw everything
+        function redraw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawAxes();
+
+            points.forEach(point => drawPoint(point.x, point.y));
+
+            if (line) {
+                drawResiduals(line.m, line.b);
+                drawLine(line.m, line.b);
+            }
+        }
+
+        // Fit the line
+        function fitLine() {
+            if (points.length < 2) {
+                alert('Please add at least 2 points!');
+                return;
+            }
+
+            line = calculateBestFit();
+            redraw();
+        }
+
+        // Animate the fitting process
+        function animateFitting() {
+            if (points.length < 2) {
+                alert('Please add at least 2 points!');
+                return;
+            }
+
+            isAnimating = true;
+            line = null;
+            let frame = 0;
+            const totalFrames = 60;
+
+            const targetLine = calculateBestFit();
+
+            function animate() {
+                if (frame >= totalFrames) {
+                    isAnimating = false;
+                    line = targetLine;
+                    redraw();
+                    return;
+                }
+
+                const progress = frame / totalFrames;
+                const eased = 1 - Math.pow(1 - progress, 3); // Ease out cubic
+
+                line = {
+                    m: targetLine.m * eased,
+                    b: targetLine.b * eased
+                };
+
+                redraw();
+                frame++;
+                requestAnimationFrame(animate);
+            }
+
+            animate();
+        }
+
+        // Clear canvas
+        function clearCanvas() {
+            points.length = 0;
+            line = null;
+            redraw();
+        }
+
+        // Generate random points
+        function generateRandomPoints() {
+            clearCanvas();
+            const numPoints = 8 + Math.floor(Math.random() * 5);
+            const m = (Math.random() - 0.5) * 2; // Random slope
+            const b = 100 + Math.random() * 200; // Random intercept
+
+            for (let i = 0; i < numPoints; i++) {
+                const x = 80 + Math.random() * 460;
+                const trueY = m * (x - 40) + b;
+                const noise = (Math.random() - 0.5) * 80;
+                const y = 360 - (trueY + noise);
+
+                points.push({ x, y });
+            }
+
+            redraw();
+        }
+
+        // Handle clicks
+        canvas.addEventListener('click', (e) => {
+            if (isAnimating) return;
+
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            // Only add points within bounds
+            if (x > 40 && x < 580 && y > 20 && y < 360) {
+                points.push({ x, y });
+                redraw();
+            }
+        });
+
+        // Initial draw
+        drawAxes();
+    </script>
+</body>
+</html>

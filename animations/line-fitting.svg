@@ -1,0 +1,158 @@
+<svg width="600" height="400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Define gradients for the line -->
+    <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#8b5cf6;stop-opacity:1" />
+    </linearGradient>
+
+    <!-- Define animation for line drawing -->
+    <style>
+      @keyframes drawLine {
+        0% { stroke-dashoffset: 800; }
+        100% { stroke-dashoffset: 0; }
+      }
+
+      @keyframes fadeIn {
+        0% { opacity: 0; transform: scale(0); }
+        100% { opacity: 1; transform: scale(1); }
+      }
+
+      @keyframes pulsePoint {
+        0%, 100% { r: 6; opacity: 0.8; }
+        50% { r: 8; opacity: 1; }
+      }
+
+      .data-point {
+        animation: fadeIn 0.5s ease forwards;
+        transform-origin: center;
+      }
+
+      .fitted-line {
+        stroke-dasharray: 800;
+        stroke-dashoffset: 800;
+        animation: drawLine 2s ease forwards;
+        animation-delay: 2s;
+      }
+
+      .residual-line {
+        stroke-dasharray: 200;
+        stroke-dashoffset: 200;
+        animation: drawLine 1s ease forwards;
+      }
+    </style>
+  </defs>
+
+  <!-- Background grid -->
+  <g id="grid" opacity="0.1">
+    <line x1="0" y1="100" x2="600" y2="100" stroke="#64748b" stroke-width="1"/>
+    <line x1="0" y1="200" x2="600" y2="200" stroke="#64748b" stroke-width="1"/>
+    <line x1="0" y1="300" x2="600" y2="300" stroke="#64748b" stroke-width="1"/>
+    <line x1="100" y1="0" x2="100" y2="400" stroke="#64748b" stroke-width="1"/>
+    <line x1="200" y1="0" x2="200" y2="400" stroke="#64748b" stroke-width="1"/>
+    <line x1="300" y1="0" x2="300" y2="400" stroke="#64748b" stroke-width="1"/>
+    <line x1="400" y1="0" x2="400" y2="400" stroke="#64748b" stroke-width="1"/>
+    <line x1="500" y1="0" x2="500" y2="400" stroke="#64748b" stroke-width="1"/>
+  </g>
+
+  <!-- Axes -->
+  <g id="axes">
+    <line x1="50" y1="350" x2="550" y2="350" stroke="#0f172a" stroke-width="2"/>
+    <line x1="50" y1="350" x2="50" y2="50" stroke="#0f172a" stroke-width="2"/>
+    <!-- Arrows -->
+    <polygon points="550,350 540,345 540,355" fill="#0f172a"/>
+    <polygon points="50,50 45,60 55,60" fill="#0f172a"/>
+  </g>
+
+  <!-- Data points with scatter -->
+  <g id="dataPoints">
+    <!-- Point 1 -->
+    <circle class="data-point" cx="100" cy="300" r="6" fill="#f97316" style="animation-delay: 0.2s;">
+      <animate attributeName="r" values="6;8;6" dur="2s" repeatCount="indefinite" begin="2.2s"/>
+    </circle>
+
+    <!-- Point 2 -->
+    <circle class="data-point" cx="150" cy="270" r="6" fill="#f97316" style="animation-delay: 0.4s;">
+      <animate attributeName="r" values="6;8;6" dur="2s" repeatCount="indefinite" begin="2.4s"/>
+    </circle>
+
+    <!-- Point 3 -->
+    <circle class="data-point" cx="200" cy="230" r="6" fill="#f97316" style="animation-delay: 0.6s;">
+      <animate attributeName="r" values="6;8;6" dur="2s" repeatCount="indefinite" begin="2.6s"/>
+    </circle>
+
+    <!-- Point 4 -->
+    <circle class="data-point" cx="250" cy="210" r="6" fill="#f97316" style="animation-delay: 0.8s;">
+      <animate attributeName="r" values="6;8;6" dur="2s" repeatCount="indefinite" begin="2.8s"/>
+    </circle>
+
+    <!-- Point 5 -->
+    <circle class="data-point" cx="300" cy="170" r="6" fill="#f97316" style="animation-delay: 1.0s;">
+      <animate attributeName="r" values="6;8;6" dur="2s" repeatCount="indefinite" begin="3.0s"/>
+    </circle>
+
+    <!-- Point 6 -->
+    <circle class="data-point" cx="350" cy="150" r="6" fill="#f97316" style="animation-delay: 1.2s;">
+      <animate attributeName="r" values="6;8;6" dur="2s" repeatCount="indefinite" begin="3.2s"/>
+    </circle>
+
+    <!-- Point 7 -->
+    <circle class="data-point" cx="400" cy="120" r="6" fill="#f97316" style="animation-delay: 1.4s;">
+      <animate attributeName="r" values="6;8;6" dur="2s" repeatCount="indefinite" begin="3.4s"/>
+    </circle>
+
+    <!-- Point 8 -->
+    <circle class="data-point" cx="450" cy="100" r="6" fill="#f97316" style="animation-delay: 1.6s;">
+      <animate attributeName="r" values="6;8;6" dur="2s" repeatCount="indefinite" begin="3.6s"/>
+    </circle>
+
+    <!-- Point 9 -->
+    <circle class="data-point" cx="500" cy="80" r="6" fill="#f97316" style="animation-delay: 1.8s;">
+      <animate attributeName="r" values="6;8;6" dur="2s" repeatCount="indefinite" begin="3.8s"/>
+    </circle>
+  </g>
+
+  <!-- Residual lines (error lines from points to fitted line) -->
+  <g id="residuals" opacity="0.3">
+    <line class="residual-line" x1="100" y1="300" x2="100" y2="295" stroke="#ef4444" stroke-width="1.5" style="animation-delay: 4s;"/>
+    <line class="residual-line" x1="150" y1="270" x2="150" y2="262" stroke="#ef4444" stroke-width="1.5" style="animation-delay: 4.1s;"/>
+    <line class="residual-line" x1="200" y1="230" x2="200" y2="229" stroke="#ef4444" stroke-width="1.5" style="animation-delay: 4.2s;"/>
+    <line class="residual-line" x1="250" y1="210" x2="250" y2="196" stroke="#ef4444" stroke-width="1.5" style="animation-delay: 4.3s;"/>
+    <line class="residual-line" x1="300" y1="170" x2="300" y2="163" stroke="#ef4444" stroke-width="1.5" style="animation-delay: 4.4s;"/>
+    <line class="residual-line" x1="350" y1="150" x2="350" y2="130" stroke="#ef4444" stroke-width="1.5" style="animation-delay: 4.5s;"/>
+    <line class="residual-line" x1="400" y1="120" x2="400" y2="97" stroke="#ef4444" stroke-width="1.5" style="animation-delay: 4.6s;"/>
+    <line class="residual-line" x1="450" y1="100" x2="450" y2="64" stroke="#ef4444" stroke-width="1.5" style="animation-delay: 4.7s;"/>
+    <line class="residual-line" x1="500" y1="80" x2="500" y2="31" stroke="#ef4444" stroke-width="1.5" style="animation-delay: 4.8s;"/>
+  </g>
+
+  <!-- Best fit line (linear regression) -->
+  <line class="fitted-line" x1="80" y1="310" x2="520" y2="20" stroke="url(#lineGradient)" stroke-width="3" stroke-linecap="round"/>
+
+  <!-- Labels -->
+  <g id="labels" opacity="0">
+    <text x="300" y="390" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#64748b">
+      X Axis
+    </text>
+    <text x="20" y="200" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#64748b" transform="rotate(-90 20 200)">
+      Y Axis
+    </text>
+    <text x="300" y="30" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#0f172a">
+      Linear Regression: Line Fitting
+    </text>
+
+    <!-- Animate labels fade in -->
+    <animate attributeName="opacity" from="0" to="1" dur="1s" begin="5s" fill="freeze"/>
+  </g>
+
+  <!-- Legend -->
+  <g id="legend" opacity="0">
+    <rect x="420" y="320" width="120" height="60" fill="white" stroke="#e2e8f0" stroke-width="1" rx="4"/>
+    <circle cx="435" cy="335" r="5" fill="#f97316"/>
+    <text x="445" y="339" font-family="Arial, sans-serif" font-size="12" fill="#0f172a">Data Points</text>
+    <line x1="428" y1="355" x2="442" y2="355" stroke="url(#lineGradient)" stroke-width="2"/>
+    <text x="445" y="359" font-family="Arial, sans-serif" font-size="12" fill="#0f172a">Best Fit</text>
+
+    <!-- Animate legend fade in -->
+    <animate attributeName="opacity" from="0" to="1" dur="1s" begin="5.5s" fill="freeze"/>
+  </g>
+</svg>
