@@ -76,6 +76,16 @@ nav a:hover {
     text-align: center;
 }
 
+.profile-pic {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid white;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
 .hero-content h2 {
     font-size: 2.5rem;
     margin-bottom: 1rem;
@@ -104,6 +114,145 @@ nav a:hover {
     max-width: 800px;
     margin: 0 auto;
     text-align: center;
+}
+
+/* Experience Section */
+#experience {
+    padding: 4rem 2rem;
+}
+
+#experience h2 {
+    font-size: 2rem;
+    margin-bottom: 3rem;
+    text-align: center;
+}
+
+.timeline {
+    max-width: 900px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.timeline::before {
+    content: '';
+    position: absolute;
+    left: 20px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--border-color);
+}
+
+.timeline-item {
+    position: relative;
+    padding-left: 60px;
+    margin-bottom: 3rem;
+}
+
+.timeline-marker {
+    position: absolute;
+    left: 11px;
+    top: 0;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--primary-color);
+    border: 3px solid white;
+    box-shadow: 0 0 0 3px var(--border-color);
+}
+
+.timeline-content h3 {
+    font-size: 1.5rem;
+    color: var(--text-color);
+    margin-bottom: 0.25rem;
+}
+
+.timeline-content h4 {
+    font-size: 1.125rem;
+    color: var(--primary-color);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.timeline-content .duration {
+    color: var(--text-light);
+    font-size: 0.9375rem;
+    margin-bottom: 1rem;
+}
+
+.timeline-content .subsection {
+    font-weight: 600;
+    color: var(--text-color);
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.timeline-content ul {
+    list-style-position: outside;
+    margin-left: 1.25rem;
+    color: var(--text-light);
+}
+
+.timeline-content li {
+    margin-bottom: 0.75rem;
+    line-height: 1.6;
+}
+
+/* Education Section */
+#education {
+    padding: 4rem 2rem;
+    background: var(--bg-light);
+}
+
+#education h2 {
+    font-size: 2rem;
+    margin-bottom: 3rem;
+    text-align: center;
+}
+
+.education-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.education-card {
+    background: var(--bg-white);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 2rem;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.education-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+}
+
+.education-card h3 {
+    font-size: 1.25rem;
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+}
+
+.education-card h4 {
+    font-size: 1.125rem;
+    color: var(--text-color);
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.education-card .institution {
+    color: var(--text-light);
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.education-card .duration {
+    color: var(--text-light);
+    font-size: 0.9375rem;
 }
 
 /* Projects Section */
@@ -269,8 +418,22 @@ footer p {
 
     #projects h2,
     #about h2,
+    #experience h2,
+    #education h2,
     #contact h2 {
         font-size: 1.75rem;
+    }
+
+    .timeline::before {
+        left: 15px;
+    }
+
+    .timeline-item {
+        padding-left: 50px;
+    }
+
+    .timeline-marker {
+        left: 6px;
     }
 }
 
