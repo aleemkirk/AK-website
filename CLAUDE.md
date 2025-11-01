@@ -2,6 +2,8 @@
 
 I want Claude to act as a frontend developer and UI/UX developer to help me design and build my own personal website on github pages.
 
+## Source
+
 Help me to refactor my project and modify it to match these existing portfolios:
 - https://8jun.github.io/
 - https://dhaitz.github.io/
