@@ -462,14 +462,83 @@ section h2 {
     border-radius: 12px;
     padding: 2.5rem;
     box-shadow: var(--shadow-md);
-    transition: all 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     border-left: 4px solid var(--primary-color);
+    position: relative;
+    overflow: hidden;
+}
+
+.project-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s ease;
+}
+
+.project-card:hover::before {
+    transform: scaleX(1);
 }
 
 .project-card:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--shadow-xl);
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px -10px rgba(30, 64, 175, 0.2);
     border-left-color: var(--accent-color);
+}
+
+.project-icon {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+    transition: all 0.3s ease;
+}
+
+.project-icon i {
+    font-size: 28px;
+    color: white;
+}
+
+.project-card:hover .project-icon {
+    transform: scale(1.1) rotate(5deg);
+    box-shadow: 0 10px 20px rgba(30, 64, 175, 0.3);
+}
+
+/* Project-specific hover colors */
+.project-wildfire:hover .project-icon {
+    background: linear-gradient(135deg, #f97316, #dc2626);
+    box-shadow: 0 10px 20px rgba(249, 115, 22, 0.4);
+}
+
+.project-wildfire:hover {
+    border-left-color: #f97316;
+}
+
+.project-power:hover .project-icon {
+    background: linear-gradient(135deg, #0ea5e9, #06b6d4);
+    box-shadow: 0 10px 20px rgba(14, 165, 233, 0.4);
+}
+
+.project-power:hover {
+    border-left-color: #0ea5e9;
+}
+
+.project-optimization:hover .project-icon {
+    background: linear-gradient(135deg, #10b981, #14b8a6);
+    box-shadow: 0 10px 20px rgba(16, 185, 129, 0.4);
+}
+
+.project-optimization:hover {
+    border-left-color: #10b981;
 }
 
 .project-card h3 {
@@ -477,6 +546,11 @@ section h2 {
     margin-bottom: 1rem;
     color: var(--text-color);
     font-weight: 700;
+    transition: color 0.3s ease;
+}
+
+.project-card:hover h3 {
+    color: var(--primary-color);
 }
 
 .project-tags {
@@ -498,6 +572,47 @@ section h2 {
 
 .tag:hover {
     background: var(--primary-color);
+    color: white;
+}
+
+/* Category-based tag colors */
+.tag-ml {
+    background: #dbeafe;
+    color: #1e40af;
+}
+
+.tag-ml:hover {
+    background: #1e40af;
+    color: white;
+}
+
+.tag-language {
+    background: #f3e8ff;
+    color: #7c3aed;
+}
+
+.tag-language:hover {
+    background: #7c3aed;
+    color: white;
+}
+
+.tag-tool {
+    background: #ccfbf1;
+    color: #0f766e;
+}
+
+.tag-tool:hover {
+    background: #0f766e;
+    color: white;
+}
+
+.tag-cloud {
+    background: #fed7aa;
+    color: #c2410c;
+}
+
+.tag-cloud:hover {
+    background: #c2410c;
     color: white;
 }
 
@@ -538,16 +653,22 @@ section h2 {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    color: var(--primary-color);
+    color: white;
+    background: var(--primary-color);
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
     text-decoration: none;
-    font-size: 1rem;
+    font-size: 0.9375rem;
     font-weight: 600;
-    transition: all 0.2s ease;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(30, 64, 175, 0.2);
 }
 
 .project-link:hover {
-    color: var(--secondary-color);
+    background: var(--secondary-color);
     gap: 0.75rem;
+    transform: translateX(4px);
+    box-shadow: 0 6px 16px rgba(30, 64, 175, 0.3);
 }
 
 /* Contact Section */
