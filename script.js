@@ -1,64 +1,3 @@
-// Intersection Observer for scroll animations
-const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
-};
-
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-
-            // Trigger counter animation for stats
-            if (entry.target.classList.contains('stats-container')) {
-                animateCounters();
-            }
-        }
-    });
-}, observerOptions);
-
-// Observe all scroll-reveal elements
-document.addEventListener('DOMContentLoaded', () => {
-    const scrollElements = document.querySelectorAll('.scroll-reveal');
-    scrollElements.forEach(el => observer.observe(el));
-});
-
-// Counter animation for statistics
-function animateCounters() {
-    const counters = document.querySelectorAll('.stat-number');
-
-    counters.forEach(counter => {
-        const target = parseInt(counter.getAttribute('data-target'));
-        const duration = 2000; // 2 seconds
-        const increment = target / (duration / 16); // 60fps
-        let current = 0;
-
-        const updateCounter = () => {
-            current += increment;
-            if (current < target) {
-                counter.textContent = formatNumber(Math.ceil(current));
-                requestAnimationFrame(updateCounter);
-            } else {
-                counter.textContent = formatNumber(target);
-            }
-        };
-
-        updateCounter();
-    });
-}
-
-// Format large numbers with commas or abbreviations
-function formatNumber(num) {
-    if (num >= 1000000000) {
-        return (num / 1000000000).toFixed(1) + 'B';
-    } else if (num >= 1000000) {
-        return (num / 1000000).toFixed(1) + 'M';
-    } else if (num >= 1000) {
-        return num.toLocaleString();
-    }
-    return num.toString();
-}
-
 // Smooth scroll for navigation links
 document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
@@ -73,12 +12,51 @@ document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
     });
 });
 
-// Add parallax effect to hero section
+// Back to top button functionality
+const backToTopButton = document.getElementById('backToTop');
+
 window.addEventListener('scroll', () => {
-    const scrolled = window.pageYOffset;
-    const hero = document.querySelector('#hero');
-    if (hero && scrolled < hero.offsetHeight) {
-        hero.style.transform = `translateY(${scrolled * 0.5}px)`;
-        hero.style.opacity = 1 - scrolled / hero.offsetHeight;
+    if (window.pageYOffset > 300) {
+        backToTopButton.classList.add('visible');
+    } else {
+        backToTopButton.classList.remove('visible');
     }
 });
+
+backToTopButton.addEventListener('click', () => {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+});
+
+// Active navigation state on scroll
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('nav a[href^="#"]');
+
+function setActiveNav() {
+    const scrollPosition = window.pageYOffset;
+
+    sections.forEach(section => {
+        const sectionTop = section.offsetTop - 100;
+        const sectionHeight = section.offsetHeight;
+        const sectionId = section.getAttribute('id');
+
+        if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${sectionId}`) {
+                    link.classList.add('active');
+                }
+            });
+        }
+    });
+
+    // Remove active state when at top of page
+    if (scrollPosition < 100) {
+        navLinks.forEach(link => link.classList.remove('active'));
+    }
+}
+
+window.addEventListener('scroll', setActiveNav);
+window.addEventListener('load', setActiveNav);

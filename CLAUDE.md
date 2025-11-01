@@ -24,7 +24,7 @@ This is a GitHub Pages portfolio website showcasing data science projects by Ale
 
 ## Website Layout
 
-- About me section: include a brief paragraph about me and my educational experience. Use my rme as reference
+- About me section: include a brief paragraph about me and my educational experience. Use my resume as reference
 - Projects: add high level information about the projects in the Project Overview section. Include technologies used, tags, etc.
 - Certifications: look at my resume for this
 - Contact Information: Add my email and links to socials here again. 
