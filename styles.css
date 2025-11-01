@@ -603,12 +603,21 @@ section h2 {
     fill: white;
 }
 
+.contact-link:hover .contact-icon.fas {
+    color: white;
+}
+
 .contact-icon {
     width: 32px;
     height: 32px;
     stroke: var(--primary-color);
     fill: var(--primary-color);
     transition: all 0.3s ease;
+}
+
+.contact-icon.fas {
+    font-size: 32px;
+    color: var(--primary-color);
 }
 
 /* Footer */
